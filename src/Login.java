@@ -70,7 +70,8 @@ public class Login extends JPanel implements ActionListener{
 					sb.append(Integer.toString((byteData[i] & 0xFF) + 0x100,16).substring(1));
 				} if(pass.equals(sb.toString()))
 					System.out.println("You have logged in");
-				
+					add(new FileBrowser(userTF.getText()), "fb");
+					cl.show(this, "fb");
 				
 			} catch (FileNotFoundException e1) {
 				
