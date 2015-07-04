@@ -2,9 +2,13 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.StringTokenizer;
 
 import javax.swing.*;
@@ -53,13 +57,34 @@ public class Register extends JPanel implements ActionListener{
 						
 						if(userTF.getText().equals(st.nextToken())){
 							System.out.println("User already exists.");
-							break;
+							return;
 						}
 						line = input.readLine();
 					}
+					input.close();
+					//A a byte format of the password and convert to string
+					MessageDigest md = MessageDigest.getInstance("SHA-256");//hashes our password
+					md.update(pass.getBytes());
+					byte byteData[] = md.digest();
+					StringBuffer sb = new StringBuffer();
+					for(int i = 0; i < byteData.length; i++){
+						//String buffer obtaining new password
+						sb.append(Integer.toString((byteData[i] & 0xFF) + 0x100,16).substring(1));
+					}	
+					//Write out password
+					BufferedWriter output = new BufferedWriter(new FileWriter("passwords.txt", true));
+					//User information
+					output.write(userTF.getText() + " " + sb.toString() + "\n");
+					output.close();						//Go back to login
+					Login login = (Login) getParent();
+					login.cl.show(login, "login");
+
+
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (NoSuchAlgorithmException e1) {
 					e1.printStackTrace();
 				}
 			}
