@@ -8,6 +8,7 @@ import javax.swing.*;
 
 public class Login extends JPanel implements ActionListener{
 	
+	//Variables to display
 	JLabel userL = new JLabel("Username: ");
 	JTextField userTF = new JTextField();
 	JLabel passL = new JLabel("Password: ");
@@ -36,8 +37,8 @@ public class Login extends JPanel implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		add(new Register(), "register"); //make new Register with register Key
+		cl.show(this, "register"); //Show register class
 	}
 	public static void main(String[] args){
 		JFrame frame = new JFrame("Text Editor");
